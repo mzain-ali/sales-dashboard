@@ -15,8 +15,8 @@ export default function CustomersPane() {
   const data = months[activeMonth]
   const items = useMemo(() => data ? getFilteredItems(data, dateRange, crossFilter) : [], [data, dateRange, crossFilter])
   const custs = useMemo(() => aggregateCustomers(items), [items])
-  const chartRev = custs.slice(0,15).map(c=>({ name:c.name.substring(0,16), value:Math.round(c.rev) }))
-  const chartMarg = [...custs].filter(c=>c.rev>100).map(c=>({ name:c.name.substring(0,16), value:+(c.marg/c.rev*100).toFixed(1) })).sort((a,b)=>b.value-a.value).slice(0,15)
+  const chartRev = custs.slice(0,15).map(c=>({ name:c.name.substring(0,16), fullName: c.name, value:Math.round(c.rev) }))
+  const chartMarg = [...custs].filter(c=>c.rev>100).map(c=>({ name:c.name.substring(0,16), fullName: c.name, value:+(c.marg/c.rev*100).toFixed(1) })).sort((a,b)=>b.value-a.value).slice(0,15)
 
   const containerRef = useRef<HTMLDivElement>(null)
   useReveal(containerRef)

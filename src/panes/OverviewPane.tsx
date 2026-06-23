@@ -17,8 +17,8 @@ export default function OverviewPane() {
   const { months, activeMonth, dateRange, crossFilter, openModal, setCrossFilter } = useDashboardStore()
   const data = months[activeMonth]
   const items = useMemo(() => data ? getFilteredItems(data, dateRange, crossFilter) : [], [data, dateRange, crossFilter])
-  const custs = useMemo(() => aggregateCustomers(items).slice(0,10).map(c=>({ name:c.name.substring(0,16), value:Math.round(c.rev) })), [items])
-  const parts = useMemo(() => aggregateParts(items).slice(0,10).map(p=>({ name:p.name.substring(0,16), value:Math.round(p.rev) })), [items])
+  const custs = useMemo(() => aggregateCustomers(items).slice(0,10).map(c=>({ name:c.name.substring(0,16), fullName: c.name, value:Math.round(c.rev) })), [items])
+  const parts = useMemo(() => aggregateParts(items).slice(0,10).map(p=>({ name:p.name.substring(0,16), fullName: p.name, value:Math.round(p.rev) })), [items])
 
   const containerRef = useRef<HTMLDivElement>(null)
   useReveal(containerRef)

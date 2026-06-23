@@ -15,8 +15,8 @@ export default function PartsPane() {
   const data = months[activeMonth]
   const items = useMemo(() => data ? getFilteredItems(data, dateRange, crossFilter) : [], [data, dateRange, crossFilter])
   const parts = useMemo(() => aggregateParts(items), [items])
-  const chartRev = parts.slice(0,15).map(p=>({ name:p.name.substring(0,16), value:Math.round(p.rev) }))
-  const chartMarg = [...parts].filter(p=>p.rev>100).map(p=>({ name:p.name.substring(0,16), value:+(p.marg/p.rev*100).toFixed(1) })).sort((a,b)=>b.value-a.value).slice(0,15)
+  const chartRev = parts.slice(0,15).map(p=>({ name:p.name.substring(0,16), fullName: p.name, value:Math.round(p.rev) }))
+  const chartMarg = [...parts].filter(p=>p.rev>100).map(p=>({ name:p.name.substring(0,16), fullName: p.name, value:+(p.marg/p.rev*100).toFixed(1) })).sort((a,b)=>b.value-a.value).slice(0,15)
 
   const containerRef = useRef<HTMLDivElement>(null)
   useReveal(containerRef)
