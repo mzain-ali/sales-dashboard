@@ -1,0 +1,4 @@
+.wrap { text-align: center; padding: 48px 20px; }
+.ico { width: 40px; height: 40px; stroke: var(--border-2); margin: 0 auto 14px; display: block; }
+.title { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; font-family: 'Plus Jakarta Sans', sans-serif; }
+.body { font-size: 12px; color: var(--text-muted); line-height: 1.6; }

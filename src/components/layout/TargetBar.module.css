@@ -1,0 +1,7 @@
+.bar { background: var(--surface-2); border-bottom: 1px solid var(--border); padding: 0 28px; height: 44px; display: flex; align-items: center; gap: 16px; font-size: 11px; color: var(--text-muted); flex-wrap: wrap; overflow: hidden; }
+.label { font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.inp { height: 26px; border: 1px solid var(--border); border-radius: 6px; padding: 0 8px; font-size: 12px; width: 90px; font-family: 'JetBrains Mono', monospace; outline: none; background: var(--bg); color: var(--text-primary); transition: border-color .15s; }
+.inp:focus { border-color: var(--accent); }
+.result { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; white-space: nowrap; }
+.hit { background: var(--green-light); color: var(--green); }
+.miss { background: var(--red-light); color: var(--red); }

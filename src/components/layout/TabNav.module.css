@@ -1,0 +1,8 @@
+.nav { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; position: sticky; top: var(--topbar-h); z-index: 99; overflow-x: auto; }
+.tab { padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2.5px solid transparent; transition: color .15s; white-space: nowrap; display: flex; align-items: center; gap: 6px; position: relative; background: none; border-top: none; border-left: none; border-right: none; font-family: 'Inter', sans-serif; }
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--accent); font-weight: 600; }
+.tab svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.badge { font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 8px; background: var(--accent-light); color: var(--accent); }
+.badge.red { background: var(--red-light); color: var(--red); }
+.underline { position: absolute; bottom: -1px; left: 0; right: 0; height: 2.5px; background: var(--accent); border-radius: 2px; }

@@ -1,0 +1,22 @@
+.screen { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; }
+.logo { display: flex; align-items: center; gap: 10px; margin-bottom: 48px; }
+.mark { width: 36px; height: 36px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.mark svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: -.02em; }
+.name span { color: var(--accent); }
+.zone { width: 480px; max-width: 92vw; border: 2px dashed var(--border-2); border-radius: 20px; padding: 52px 40px; text-align: center; transition: all .2s; position: relative; overflow: hidden; background: var(--bg); }
+.zone::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% -10%, var(--accent-light), transparent 65%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.zone.drag, .zone:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
+.zone.drag::before, .zone:focus-within::before { opacity: 1; }
+.ico { width: 72px; height: 72px; background: var(--accent-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; transition: all .2s; }
+.zone.drag .ico { background: var(--accent); transform: scale(1.08); }
+.ico svg { width: 30px; height: 30px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke .2s; }
+.zone.drag .ico svg { stroke: #fff; }
+.zone h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -.02em; }
+.zone p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
+.btn { background: var(--accent); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; padding: 12px 28px; border-radius: 50px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all .2s; border: none; }
+.btn:hover { background: #4338CA; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(79,70,229,.3); }
+.btn svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hint { font-size: 11px; color: var(--text-subtle); margin-top: 14px; font-family: 'JetBrains Mono', monospace; }
+.progress { height: 3px; background: var(--border); border-radius: 2px; width: 100%; max-width: 320px; margin-top: 32px; overflow: hidden; }
+.bar { height: 100%; background: var(--accent); width: 0%; border-radius: 2px; transition: width .3s; }
