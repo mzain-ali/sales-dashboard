@@ -9,7 +9,7 @@ import { exportToPDF } from '@/lib/pdfExport'
 import styles from './Topbar.module.css'
 
 export default function Topbar({ fileInputId }: { fileInputId: string }) {
-  const { activeMonth, months, dateRange, crossFilter, settings, setSettingsPanelOpen, openModal } = useDashboardStore()
+  const { activeMonth, months, dateRange, crossFilter, settings, setSettingsPanelOpen, openModal, theme, setTheme } = useDashboardStore()
   const data = months[activeMonth]
   const [toast, setToast] = useState('')
   const [toastVisible, setToastVisible] = useState(false)
@@ -131,6 +131,26 @@ export default function Topbar({ fileInputId }: { fileInputId: string }) {
             PDF Report
           </button>
           <button className={styles.btn} onClick={handleShare}><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Share</button>
+          <button className={`${styles.btn} no-print`} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Toggle theme">
+            {theme === 'dark' ? (
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            )}
+            {theme === 'dark' ? 'Light' : 'Dark'}
+          </button>
           <button className={styles.btn} onClick={() => setSettingsPanelOpen(true)}><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>Settings</button>
           <button className={`${styles.btn} no-print`} onClick={() => window.print()}><svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print</button>
         </div>

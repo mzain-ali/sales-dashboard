@@ -17,7 +17,7 @@ export default function CustomerBarChart({ data, height = 260, isMargin, onBarCl
           {data.map((entry, i) => {
             const dimmed = activeFilter && activeFilter !== entry.name
             const col = isMargin ? (entry.value >= 50 ? '#10B98199' : entry.value >= 25 ? '#F59E0B99' : '#EF444499') : CHART_COLORS[i % CHART_COLORS.length] + 'BB'
-            return <Cell key={i} fill={dimmed ? '#E2E8F0' : col} />
+            return <Cell key={i} fill={dimmed ? 'var(--surface-2)' : col} />
           })}
         </Bar>
       </BarChart>

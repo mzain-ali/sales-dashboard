@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useEffect } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useDashboardStore } from '@/store/dashboardStore'
 import { parseWorkbook } from '@/lib/parser'
@@ -27,8 +27,12 @@ import styles from './Dashboard.module.css'
 const FILE_INPUT_ID = 'global-file-input'
 
 export default function Dashboard() {
-  const { months, activeMonth, activeTab, addMonth, crossFilter, dateRange, settings } = useDashboardStore()
+  const { months, activeMonth, activeTab, addMonth, crossFilter, dateRange, settings, theme } = useDashboardStore()
   const hasData = Object.keys(months).length > 0
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme || 'light')
+  }, [theme])
 
   const alertCount = useMemo(() => {
     if (!hasData) return 0

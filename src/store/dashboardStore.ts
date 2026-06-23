@@ -34,6 +34,8 @@ interface DashboardStore {
 
   settingsPanelOpen: boolean
   setSettingsPanelOpen: (open: boolean) => void
+  theme: 'light' | 'dark'
+  setTheme: (t: 'light' | 'dark') => void
 }
 
 export const useDashboardStore = create<DashboardStore>()(
@@ -77,10 +79,12 @@ export const useDashboardStore = create<DashboardStore>()(
 
       settingsPanelOpen: false,
       setSettingsPanelOpen: (open) => set({ settingsPanelOpen: open }),
+      theme: 'light',
+      setTheme: (t) => set({ theme: t }),
     }),
     {
       name: 'hmi-dashboard',
-      partialize: (s) => ({ settings: s.settings, annotations: s.annotations }),
+      partialize: (s) => ({ settings: s.settings, annotations: s.annotations, theme: s.theme }),
     }
   )
 )
