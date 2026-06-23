@@ -20,6 +20,8 @@ import PartsPane from '@/panes/PartsPane'
 import MarginPane from '@/panes/MarginPane'
 import ComparePane from '@/panes/ComparePane'
 import AlertsPane from '@/panes/AlertsPane'
+import RepPane from '@/panes/RepPane'
+import InvoicesPane from '@/panes/InvoicesPane'
 import styles from './Dashboard.module.css'
 
 const FILE_INPUT_ID = 'global-file-input'
@@ -66,6 +68,8 @@ export default function Dashboard() {
                 {activeTab === 'overview' && <OverviewPane />}
                 {activeTab === 'revenue' && <RevenuePane />}
                 {activeTab === 'customers' && <CustomersPane />}
+                {activeTab === 'invoices' && <InvoicesPane />}
+                {activeTab === 'reps' && <RepPane />}
                 {activeTab === 'parts' && <PartsPane />}
                 {activeTab === 'margin' && <MarginPane />}
                 {activeTab === 'compare' && <ComparePane />}

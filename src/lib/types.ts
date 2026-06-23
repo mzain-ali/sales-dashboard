@@ -13,6 +13,13 @@ export interface SalesItem {
   cogs: number
   vat: number
   rep?: string
+
+  // NEW optional fields:
+  partNo?: string       // Invoice lines/Part Number
+  ownRef?: string       // Invoice lines/Product/Own Reference
+  unitPrice?: number    // Invoice lines/Unit Price
+  costUnit?: number     // Invoice lines/Product/Cost (per unit cost)
+  delivOrder?: string   // Delivery Order
 }
 
 export interface DailyData {
@@ -31,6 +38,7 @@ export interface CustomerData {
   qty: number
   invs: Set<string>
   lines: SalesItem[]
+  lastDate: string
 }
 
 export interface PartData {
@@ -39,6 +47,9 @@ export interface PartData {
   marg: number
   cogs: number
   qty: number
+  partNo?: string
+  ownRef?: string
+  avgUnitPrice: number
 }
 
 export interface InvoiceData {
@@ -48,6 +59,7 @@ export interface InvoiceData {
   rev: number
   marg: number
   items: number
+  delivOrder?: string
 }
 
 export interface RepData {
@@ -80,6 +92,9 @@ export interface DashboardSettings {
   lowMarginItemPct: number
   smallInvoiceOMR: number
   smallInvoicePct: number
+  _targetRev?: number
+  _targetMarg?: number
+  _targetInv?: number
 }
 
 export interface ActiveFilter {

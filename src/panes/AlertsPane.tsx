@@ -26,6 +26,29 @@ export function computeAlerts(months: any, activeMonth: string, dateRange: any, 
   if(lowM.length>0) alerts.push({type:'warn',title:`${lowM.length} parts below ${settings.lowMarginItemPct}% margin`,body:`${lowM.length} items have thin margins. Intentional or error?`,val:`${lowM.length} low-margin parts`,color:'var(--amber)',bg:'var(--amber-light)',modal:'parts-marg'})
   alerts.push({type:mPct>settings.marginWarnPct?'good':'warn',title:mPct>settings.marginWarnPct?'Healthy gross margin':'Margin below target',body:`${pct(mPct)} overall. Target: ${settings.marginWarnPct}%+`,val:`${pct(mPct)} gross margin`,color:mPct>settings.marginWarnPct?'var(--green)':'var(--amber)',bg:mPct>settings.marginWarnPct?'var(--green-light)':'var(--amber-light)',modal:'marg-split'})
   if(invoices.length>0&&smallInv/invoices.length>settings.smallInvoicePct/100) alerts.push({type:'warn',title:'Most invoices are small',body:`${pct(smallInv/invoices.length*100)} of orders are under OMR ${settings.smallInvoiceOMR}. Consider minimum order value.`,val:`${fmt(smallInv)} small invoices`,color:'var(--amber)',bg:'var(--amber-light)',modal:'inv-dist'})
+  
+  // Dormant customer alert
+  const sortedMonths = Object.keys(months).sort()
+  const activeIdx = sortedMonths.indexOf(activeMonth)
+  const prevMonthName = activeIdx > 0 ? sortedMonths[activeIdx - 1] : null
+  if (prevMonthName) {
+    const prevCusts = Object.keys(months[prevMonthName].custs)
+    const currCusts = new Set(Object.keys(data.custs))
+    const dormant = prevCusts.filter(name => !currCusts.has(name))
+    const ratio = prevCusts.length ? dormant.length / prevCusts.length : 0
+    if (ratio > 0.20) {
+      alerts.push({
+        type: 'warn',
+        title: 'Dormant accounts warning',
+        body: `${dormant.length} out of ${prevCusts.length} customers from last month (${pct(ratio * 100)}) have not ordered this month yet.`,
+        val: `${dormant.length} dormant accounts`,
+        color: 'var(--amber)',
+        bg: 'var(--amber-light)',
+        modal: 'top-custs',
+      })
+    }
+  }
+
   if(best.day>0) alerts.push({type:'good',title:`Best day: Day ${best.day}`,body:`${omr(best.rev)} in a single day with ${pct(best.rev>0?(daily.find(d=>d.day===best.day)?.marg||0)/best.rev*100:0)} margin.`,val:omr(best.rev),color:'var(--accent)',bg:'var(--accent-light)',modal:'daily-rev'})
   if(highPC.length>0) alerts.push({type:'good',title:`${highPC.length} high-margin customers`,body:`${highPC.slice(0,3).map(c=>c.name).join(', ')}${highPC.length>3?'…':''} — 70%+ margin.`,val:`${highPC.length} premium accounts`,color:'var(--green)',bg:'var(--green-light)',modal:'top-custs'})
   return alerts

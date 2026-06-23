@@ -1,5 +1,5 @@
 'use client'
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import { useDashboardStore } from '@/store/dashboardStore'
 import { getFilteredItems } from '@/lib/aggregations'
 import KpiGrid from '@/components/overview/KpiGrid'
@@ -10,6 +10,7 @@ import Badge from '@/components/ui/Badge'
 import DailyRevenueChart from '@/components/charts/DailyRevenueChart'
 import CustomerBarChart from '@/components/charts/CustomerBarChart'
 import { aggregateCustomers, aggregateParts } from '@/lib/aggregations'
+import { useReveal } from '@/hooks/useReveal'
 import styles from './Pane.module.css'
 
 export default function OverviewPane() {
@@ -19,9 +20,12 @@ export default function OverviewPane() {
   const custs = useMemo(() => aggregateCustomers(items).slice(0,10).map(c=>({ name:c.name.substring(0,16), value:Math.round(c.rev) })), [items])
   const parts = useMemo(() => aggregateParts(items).slice(0,10).map(p=>({ name:p.name.substring(0,16), value:Math.round(p.rev) })), [items])
 
+  const containerRef = useRef<HTMLDivElement>(null)
+  useReveal(containerRef)
+
   if (!data) return null
   return (
-    <div className={styles.pane}>
+    <div ref={containerRef} className={styles.pane}>
       <KpiGrid />
       <SparkRow />
       <div className={`${styles.g2} ${styles.g1}`}>

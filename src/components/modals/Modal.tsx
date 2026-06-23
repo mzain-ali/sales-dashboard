@@ -8,6 +8,8 @@ import TopPartsModal from './TopPartsModal'
 import MarginSplitModal from './MarginSplitModal'
 import InvDistModal from './InvDistModal'
 import CustDrillModal from './CustDrillModal'
+import AnnotateModal from './AnnotateModal'
+import InvoiceSearchModal from './InvoiceSearchModal'
 import styles from './Modal.module.css'
 
 const MODAL_TITLES: Record<string, string> = {
@@ -19,6 +21,8 @@ const MODAL_TITLES: Record<string, string> = {
   'marg-split': 'Revenue Split',
   'inv-dist': 'Invoice Distribution',
   'cust-drill': 'Customer Drill-Down',
+  'annotate': 'Edit Annotation',
+  'invoice-detail': 'Invoice Details',
 }
 
 export default function Modal() {
@@ -38,6 +42,8 @@ export default function Modal() {
       case 'marg-split': return <MarginSplitModal />
       case 'inv-dist': return <InvDistModal />
       case 'cust-drill': return <CustDrillModal custName={modalPayload || ''} />
+      case 'annotate': return <AnnotateModal />
+      case 'invoice-detail': return <InvoiceSearchModal />
       default: return null
     }
   }

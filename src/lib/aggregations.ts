@@ -24,10 +24,11 @@ export function aggregateCustomers(items: SalesItem[]): CustomerData[] {
   const map: Record<string, CustomerData> = {}
   items.forEach(r => {
     const k = r.cust || 'Unknown'
-    if (!map[k]) map[k] = { name: k, rev: 0, marg: 0, cogs: 0, qty: 0, invs: new Set(), lines: [] }
+    if (!map[k]) map[k] = { name: k, rev: 0, marg: 0, cogs: 0, qty: 0, invs: new Set(), lines: [], lastDate: '' }
     map[k].rev += r.tot; map[k].marg += r.marg; map[k].cogs += r.cogs; map[k].qty += r.qty
     if (r.bill) map[k].invs.add(r.bill)
     map[k].lines.push(r)
+    map[k].lastDate = r.date > (map[k].lastDate || '') ? r.date : map[k].lastDate
   })
   return Object.values(map).sort((a, b) => b.rev - a.rev)
 }
@@ -35,18 +36,27 @@ export function aggregateCustomers(items: SalesItem[]): CustomerData[] {
 export function aggregateParts(items: SalesItem[]): PartData[] {
   const map: Record<string, PartData> = {}
   items.forEach(r => {
-    if (!map[r.item]) map[r.item] = { name: r.item, rev: 0, marg: 0, cogs: 0, qty: 0 }
+    if (!map[r.item]) map[r.item] = { name: r.item, rev: 0, marg: 0, cogs: 0, qty: 0, partNo: r.partNo || '', ownRef: r.ownRef || '', avgUnitPrice: 0 }
     map[r.item].rev += r.tot; map[r.item].marg += r.marg; map[r.item].cogs += r.cogs; map[r.item].qty += r.qty
+    if (!map[r.item].partNo && r.partNo) map[r.item].partNo = r.partNo
+    if (!map[r.item].ownRef && r.ownRef) map[r.item].ownRef = r.ownRef
   })
-  return Object.values(map).sort((a, b) => b.rev - a.rev)
+  const res = Object.values(map)
+  res.forEach(p => {
+    p.avgUnitPrice = p.qty ? p.rev / p.qty : 0
+  })
+  return res.sort((a, b) => b.rev - a.rev)
 }
 
 export function aggregateInvoices(items: SalesItem[]): InvoiceData[] {
   const map: Record<string, InvoiceData> = {}
   items.forEach(r => {
     if (!r.bill) return
-    if (!map[r.bill]) map[r.bill] = { bill: r.bill, cust: r.cust, date: r.date, rev: 0, marg: 0, items: 0 }
+    if (!map[r.bill]) map[r.bill] = { bill: r.bill, cust: r.cust, date: r.date, rev: 0, marg: 0, items: 0, delivOrder: r.delivOrder || '' }
     map[r.bill].rev += r.tot; map[r.bill].marg += r.marg; map[r.bill].items++
+    if (!map[r.bill].delivOrder && r.delivOrder) {
+      map[r.bill].delivOrder = r.delivOrder
+    }
   })
   return Object.values(map).sort((a, b) => b.rev - a.rev)
 }
@@ -97,3 +107,63 @@ export const omr = (v: number) => `OMR ${fmt(v)}`
 export const pct = (v: number, d = 1) => `${Number(v).toFixed(d)}%`
 export const mColor = (p: number) => p >= 50 ? 'var(--green)' : p >= 25 ? 'var(--amber)' : 'var(--red)'
 export const mClass = (p: number) => p >= 50 ? 'green' : p >= 25 ? 'amber' : 'red'
+
+export interface CustomerTrendPoint {
+  month: string
+  rev: number
+  marg: number
+  mPct: number
+  invs: number
+}
+
+export function computeCustomerTrend(
+  months: Record<string, MonthData>,
+  sortedMonths: string[],
+  customerName: string
+): CustomerTrendPoint[] {
+  return sortedMonths.map(m => {
+    const mData = months[m]
+    const c = mData?.custs[customerName]
+    const rev = c?.rev || 0
+    const marg = c?.marg || 0
+    const mPct = rev ? (marg / rev) * 100 : 0
+    const invs = c?.invs.size || 0
+    return {
+      month: m,
+      rev,
+      marg,
+      mPct,
+      invs,
+    }
+  })
+}
+
+export interface PartTrendPoint {
+  month: string
+  rev: number
+  marg: number
+  mPct: number
+  qty: number
+}
+
+export function computePartTrend(
+  months: Record<string, MonthData>,
+  sortedMonths: string[],
+  partName: string
+): PartTrendPoint[] {
+  return sortedMonths.map(m => {
+    const mData = months[m]
+    const p = mData?.parts[partName]
+    const rev = p?.rev || 0
+    const marg = p?.marg || 0
+    const mPct = rev ? (marg / rev) * 100 : 0
+    const qty = p?.qty || 0
+    return {
+      month: m,
+      rev,
+      marg,
+      mPct,
+      qty,
+    }
+  })
+}

@@ -17,7 +17,7 @@ export default function PartsTable() {
     if (!data) return []
     const items = getFilteredItems(data, dateRange, crossFilter)
     let parts = aggregateParts(items)
-    if (q) parts = parts.filter(p => p.name.toLowerCase().includes(q.toLowerCase()))
+    if (q) parts = parts.filter(p => p.name.toLowerCase().includes(q.toLowerCase()) || p.partNo?.toLowerCase().includes(q.toLowerCase()))
     if (lowOnly) parts = parts.filter(p => p.rev > 0 && p.marg / p.rev * 100 < 10)
     parts.sort((a, b) => sort === 'marg' ? (b.marg / b.rev || 0) - (a.marg / a.rev || 0) : sort === 'qty' ? b.qty - a.qty : b.rev - a.rev)
     return limit === 'all' ? parts : parts.slice(0, parseInt(limit))
@@ -27,7 +27,7 @@ export default function PartsTable() {
     <div>
       <div className={styles.fbar}>
         <div className={styles.swrap}><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input className={styles.sinp} placeholder="Search part…" value={q} onChange={e => setQ(e.target.value)} /></div>
+          <input className={styles.sinp} placeholder="Search part or number…" value={q} onChange={e => setQ(e.target.value)} /></div>
         <select className={styles.fsel} value={sort} onChange={e => setSort(e.target.value)}>
           <option value="rev">Revenue ↓</option><option value="marg">Margin % ↓</option><option value="qty">Qty ↓</option>
         </select>
@@ -42,14 +42,17 @@ export default function PartsTable() {
       <p className={styles.count}>Showing {rows.length} parts</p>
       <div className={styles.wrap}>
         <table className={styles.table}>
-          <thead><tr><th>#</th><th>Part Name</th><th>Qty Sold</th><th>Revenue</th><th>Margin</th><th>Margin %</th></tr></thead>
+          <thead><tr><th>#</th><th>Part No</th><th>Part Name</th><th>Ref</th><th>Unit Price</th><th>Qty Sold</th><th>Revenue</th><th>Margin</th><th>Margin %</th></tr></thead>
           <tbody>
             {rows.map((p, i) => {
               const mp = p.rev ? p.marg / p.rev * 100 : 0
               return (
                 <tr key={p.name}>
                   <td className="mono" style={{ color: 'var(--text-subtle)' }}>{i + 1}</td>
+                  <td className="mono" style={{ fontWeight: 600, color: 'var(--accent)' }}>{p.partNo || '—'}</td>
                   <td>{p.name}</td>
+                  <td className="mono" style={{ color: 'var(--text-secondary)' }}>{p.ownRef || '—'}</td>
+                  <td className="mono">{omr(p.avgUnitPrice)}</td>
                   <td className="mono">{fmt(p.qty)}</td>
                   <td className="mono">{omr(p.rev)}</td>
                   <td className="mono">{omr(p.marg)}</td>
